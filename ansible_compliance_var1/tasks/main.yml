@@ -7,13 +7,13 @@
     dest: /tmp/file_to_check.txt
     mode: '0777'
   register: creating_file
-  tag:
+  tags:
     - create_file
 
 - name: echoing file
   debug:
     var: creating_file
-  tag:
+  tags:
     - create_file
 
 - name:  checking for template
@@ -25,12 +25,12 @@
   diff: yes
   register:
     checking_file
-  tag:
+  tags:
     - check_file
 
 - name: Echoing file
   debug:
     var: checking_file
-  tag:
+  tags:
     - check_file
     
