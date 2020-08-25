@@ -38,4 +38,6 @@
   debug:
     var: checking_file
   when: checking_file.changed == True
+  tags:
+    - check_file
     
