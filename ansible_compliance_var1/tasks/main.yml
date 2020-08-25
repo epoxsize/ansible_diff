@@ -45,6 +45,7 @@
   file:
     path: /nginx/file_compare.html
     state: absent
+  delegate_to: node10.da-demo.test
 
 - name: creating the file with difference report
   lineinfile:
