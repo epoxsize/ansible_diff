@@ -44,7 +44,7 @@
 - name: creating the file with difference report
   lineinfile:
     path: /nginx/file_compare.html
-    line: "HOSTNAME:BEFORE {{ ansible_hostname }}<br>{{ checking_file.diff[0].before}} <BR> HOSTNAME:AFTER : {{ ansible_hostname }}<br> {{ checking_file.diff[0].after}} <br> SYMDIFF : {{ checking_file.diff[0].before | union(checking_file.diff[0].after) }} <br>"
+    line: "<b>HOSTNAME:BEFORE {{ ansible_hostname }}</b><br>{{ checking_file.diff[0].before}} <BR><b> HOSTNAME:AFTER : {{ ansible_hostname }}</b><br> {{ checking_file.diff[0].after}} <br> SYMDIFF : {{ checking_file.diff[0].before | union(checking_file.diff[0].after) }} <br>"
     state: present
     create: yes
   when: checking_file.changed == True
