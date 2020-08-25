@@ -42,8 +42,9 @@
     - check_file
 
 - name: creating the file with difference report
-  path: /tmp/file_compare.html
-  line: "{{ ansible_hostname }} - {{ checking_file.diff }}"
+  lineinfile:
+    path: /tmp/file_compare.html
+    line: "{{ ansible_hostname }} - {{ checking_file.diff }}"
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
