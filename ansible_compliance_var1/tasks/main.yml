@@ -33,4 +33,9 @@
     var: checking_file
   tags:
     - check_file
+
+- name: Echoing when only changed
+  debug:
+    var: checking_file
+  when: checking_file.changed == True
     
