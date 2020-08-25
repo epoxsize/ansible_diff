@@ -1,0 +1,36 @@
+---
+# tasks file for ansible_compliance_var1
+
+- name:  checking for template
+  template:
+    src: "{{ role_path }}/files/file_to_check.j2"
+    dest: /tmp/file_to_check.txt
+    mode: '0777'
+  register: creating_file
+  tag:
+    - create_file
+
+- name: echoing file
+  debug:
+    var: creating_file
+  tag:
+    - create_file
+
+- name:  checking for template
+  template:
+    src: "{{ role_path }}/files/file_to_check.j2"
+    dest: /tmp/file_to_check.txt
+    mode: '0777'
+  check_mode: yes
+  diff: yes
+  register:
+    checking_file
+  tag:
+    - check_file
+
+- name: Echoing file
+  debug:
+    var: checking_file
+  tag:
+    - check_file
+    
