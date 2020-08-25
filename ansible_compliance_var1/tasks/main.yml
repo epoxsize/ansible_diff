@@ -53,7 +53,7 @@
 - name: creating the file with difference report
   lineinfile:
     path: /nginx/file_compare.html
-    line: "<table><tr><b>HOSTNAME:BEFORE {{ ansible_hostname }}</b><br>{{ checking_file.diff[0].before | replace('/n', '') }} <BR><td><b> HOSTNAME:AFTER : {{ ansible_hostname }}</b><br> {{ checking_file.diff[0].after | replace('/n', ' ') }} <br></tr></td></table>"
+    line: "<table><tr><th><b>HOSTNAME:BEFORE {{ ansible_hostname }}</b><br>{{ checking_file.diff[0].before | replace('/n', '') }} <BR></th><b> <th>HOSTNAME:AFTER : {{ ansible_hostname }}</b><br> {{ checking_file.diff[0].after | replace('/n', ' ') }} <br></th></tr></table>"
     state: present
     create: yes
   when: checking_file.changed == True
