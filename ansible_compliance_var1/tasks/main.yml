@@ -41,6 +41,11 @@
   tags:
     - check_file
 
+- name: Deleting the file with report
+  file:
+    path: /nginx/file_compare.html
+    state: absent
+
 - name: creating the file with difference report
   lineinfile:
     path: /nginx/file_compare.html
