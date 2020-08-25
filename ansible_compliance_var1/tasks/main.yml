@@ -45,6 +45,8 @@
   lineinfile:
     path: /tmp/file_compare.html
     line: "{{ ansible_hostname }} - {{ checking_file.diff }}"
+    state: present
+    create: yes
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
