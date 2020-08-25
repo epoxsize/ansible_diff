@@ -44,7 +44,7 @@
 - name: creating the file with difference report
   lineinfile:
     path: /tmp/file_compare.html
-    line: "{{ ansible_hostname }} - {{ checking_file.diff }}"
+    line: "HOSTNAME: {{ ansible_hostname }} - BEFORE: {{ checking_file.diff[0].before}} <BR> HOSTNAME : {{ ansible_hostname }} - AFTER: {{ checking_file.diff[0].after}} "
     state: present
     create: yes
   when: checking_file.changed == True
