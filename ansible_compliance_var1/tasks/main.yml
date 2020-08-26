@@ -78,3 +78,4 @@
   delegate_to: node10.da-demo.test
   tags:
     - check_file
+  ignore_errors: true
