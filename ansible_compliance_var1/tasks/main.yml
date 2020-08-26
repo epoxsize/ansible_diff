@@ -52,11 +52,10 @@
 
 - name: creating the file with difference report
   blockinfile:
-    path: "/nginx/file_{{ansible_hostname}}.html "
+    path: "/nginx/file_{{ansible_hostname}}_before.html "
     block: | 
       "<html><body>
-      <code>HOSTNAME:BEFORE  : <br> {{ ansible_hostname }}{{ checking_file.diff[0].before}} <br></code>
-       <code>HOSTNAME:AFTER : <br> {{ ansible_hostname }}{{ checking_file.diff[0].after }}" <br> </code>
+      <code>HOSTNAME:BEFORE  :  {{ ansible_hostname }}{{ checking_file.diff[0].before}} <br></code>
        </body></html>
     state: present
     create: yes
@@ -65,5 +64,18 @@
   delegate_to: node10.da-demo.test
   tags:
     - check_file
-  
-    
+
+- name: creating the file with difference report_2
+  blockinfile:
+    path: "/nginx/file_{{ansible_hostname}}_after.html "
+    block: | 
+      "<html><body>
+      <code>HOSTNAME:AFTER  :  {{ ansible_hostname }}{{ checking_file.diff[0].after}} <br></code>
+       </body></html>
+    state: present
+    create: yes
+    marker: "# COMPARSION CASE"
+  when: checking_file.changed == True
+  delegate_to: node10.da-demo.test
+  tags:
+    - check_file
