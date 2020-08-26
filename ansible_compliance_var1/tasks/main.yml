@@ -73,7 +73,7 @@
     - check_file
 
 - name: creating difference comparsion with diff
-  command: "diff /nginx/file_{{ansible_hostname}}_before.html /nginx/file_{{ansible_hostname}}_after.html > /nginx/file_{{ansible_hostname}}_diff.html"
+  shell: "diff /nginx/file_{{ansible_hostname}}_before.html /nginx/file_{{ansible_hostname}}_after.html > /nginx/file_{{ansible_hostname}}_diff.html"
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
