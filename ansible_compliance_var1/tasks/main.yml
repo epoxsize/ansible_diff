@@ -43,7 +43,7 @@
 
 - name: Deleting BEFORE report
   file:
-    path: "/nginx/file_{{ansible_hostname}}_before.html"
+    path: "/nginx/file_{{ansible_hostname}}_before.txt"
     state: absent
   delegate_to: node10.da-demo.test
   tags:
@@ -52,7 +52,7 @@
 
 - name: Deleting AFTER report
   file:
-    path: "/nginx/file_{{ansible_hostname}}_after.html"
+    path: "/nginx/file_{{ansible_hostname}}_after.txt"
     state: absent
   delegate_to: node10.da-demo.test
   tags:
@@ -61,7 +61,7 @@
 
 - name: DELETING DIFF REPORT
   file:
-    path: "/nginx/file_{{ansible_hostname}}_diff.html"
+    path: "/nginx/file_{{ansible_hostname}}_diff.txt"
     state: absent
   delegate_to: node10.da-demo.test
   tags:
@@ -70,7 +70,7 @@
 
 - name: CREATING THE FILE FOR BEFORE REPORT
   lineinfile:
-    path: "/nginx/file_{{ansible_hostname}}_before.html"
+    path: "/nginx/file_{{ansible_hostname}}_before.txt"
     line: "{{ ansible_hostname }} - {{ checking_file.diff[0].before}}"
     state: present
     create: yes
@@ -81,7 +81,7 @@
 
 - name: CREATING THE FILE FOR AFTER REPORT
   lineinfile:
-    path: "/nginx/file_{{ansible_hostname}}_after.html"
+    path: "/nginx/file_{{ansible_hostname}}_after.txt"
     line: "{{ ansible_hostname }} - {{ checking_file.diff[0].after}}"
     state: present
     create: yes
@@ -91,7 +91,7 @@
     - check_file
 
 - name: CREATING THE FILE FOR DIFF REPORT
-  shell: "diff /nginx/file_{{ansible_hostname}}_before.html /nginx/file_{{ansible_hostname}}_after.html > /nginx/file_{{ansible_hostname}}_diff.html"
+  shell: "diff /nginx/file_{{ansible_hostname}}_before.txt /nginx/file_{{ansible_hostname}}_after.txt > /nginx/file_{{ansible_hostname}}_diff.txt"
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
