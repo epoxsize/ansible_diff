@@ -51,11 +51,13 @@
     - create_file
 
 - name: creating the file with difference report
-  lineinfile:
+  blockinfile:
     path: /nginx/file_compare.html
-    line: "HOSTNAME:BEFORE {{ ansible_hostname }}{{ checking_file.diff[0].before | replace('/n', '') }}HOSTNAME:AFTER : {{ ansible_hostname }}{{ checking_file.diff[0].after | replace('/n', ' ') }}"
+    block: | 
+      "HOSTNAME:BEFORE {{ ansible_hostname }}{{ checking_file.diff[0].before}}HOSTNAME:AFTER : {{ ansible_hostname }}{{ checking_file.diff[0].after }}"
     state: present
     create: yes
+    marker: "# COMPARSION CASE"
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
