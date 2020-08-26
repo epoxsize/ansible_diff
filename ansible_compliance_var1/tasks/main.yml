@@ -53,7 +53,7 @@
 - name: creating the file with difference report
   lineinfile:
     path: "/nginx/file_{{ansible_hostname}}_before.html"
-    line: "{{ ansible_hostname }} - {{ checking_file.diff[0].before}"
+    line: "{{ ansible_hostname }} - {{ checking_file.diff[0].before}}"
     state: present
     create: yes
   when: checking_file.changed == True
