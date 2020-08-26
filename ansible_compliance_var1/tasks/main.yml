@@ -51,30 +51,29 @@
     - create_file
 
 - name: creating the file with difference report
-  blockinfile:
-    path: "/nginx/file_{{ansible_hostname}}_before.html "
-    block: | 
-      "<html><body>
-      <code>HOSTNAME:BEFORE  :  {{ ansible_hostname }}{{ checking_file.diff[0].before}} <br></code>
-       </body></html>
+  lineinfile:
+    path: "/nginx/file_{{ansible_hostname}}_before.html"
+    line: "{{ ansible_hostname }} - {{ checking_file.diff[0].before}"
     state: present
     create: yes
-    marker: "# COMPARSION CASE"
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
     - check_file
 
 - name: creating the file with difference report_2
-  blockinfile:
-    path: "/nginx/file_{{ansible_hostname}}_after.html "
-    block: | 
-      "<html><body>
-      <code>HOSTNAME:AFTER  :  {{ ansible_hostname }}{{ checking_file.diff[0].after}} <br></code>
-       </body></html>
+  lineinfile:
+    path: "/nginx/file_{{ansible_hostname}}_after.html"
+    line: "{{ ansible_hostname }} - {{ checking_file.diff[0].after}}"
     state: present
     create: yes
-    marker: "# COMPARSION CASE"
+  when: checking_file.changed == True
+  delegate_to: node10.da-demo.test
+  tags:
+    - check_file
+
+- name: creating difference comparsion with diff
+  command: "diff /nginx/file_{{ansible_hostname}}_before.html /nginx/file_{{ansible_hostname}}_after.html --to-file /nginx/file_{{ansible_hostname}}_diff.html"
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
