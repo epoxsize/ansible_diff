@@ -91,7 +91,7 @@
     - check_file
 
 - name: CREATING THE FILE FOR DIFF REPORT
-  shell: "diff /nginx/file_{{ansible_hostname}}_before.txt /nginx/file_{{ansible_hostname}}_after.txt > /nginx/file_{{ansible_hostname}}_diff.txt"
+  shell: "diff /nginx/file_{{ansible_hostname}}_before.txt /nginx/file_{{ansible_hostname}}_after.txt > /nginx/file_{{ansible_hostname}}_diff.txt -y"
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
