@@ -54,7 +54,8 @@
   blockinfile:
     path: /nginx/file_compare.html
     block: | 
-      "HOSTNAME:BEFORE {{ ansible_hostname }}{{ checking_file.diff[0].before}}HOSTNAME:AFTER : {{ ansible_hostname }}{{ checking_file.diff[0].after }}"
+      "HOSTNAME:BEFORE {{ ansible_hostname }}{{ checking_file.diff[0].before}}
+       HOSTNAME:AFTER : {{ ansible_hostname }}{{ checking_file.diff[0].after }}"
     state: present
     create: yes
     marker: "# COMPARSION CASE"
