@@ -6,6 +6,10 @@
 
 ### Creating the file to compare
 
+- name: Echoint Configuration ID LISTVAR
+  debug:
+    var: configuration_id
+
 - name:  Checking for template presence for the config - "{{ item.config_name}}"
   template:
     src: "{{ role_path }}/files/{{ item.src_config }}"
