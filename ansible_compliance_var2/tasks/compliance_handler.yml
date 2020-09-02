@@ -10,12 +10,18 @@
 - name: Echoint Configuration ID LISTVAR
   debug:
     var: configuration_id
+  tags:
+    - create_file
+    - check_file
 
 - name: Echoint Configuration ID LISTVAR
   debug:
     msg: "{{ item.key }}  +  {{ item.value.src_config }}"
   with_dict: "{{ configuration_id }}"
-
+  tags:
+    - create_file
+    - check_file
+  
 - name:  "Checking for template presence for the config - {{ item.key}}"
   template:
     src: "{{ role_path }}/files/{{ item.value.src_config }}"
