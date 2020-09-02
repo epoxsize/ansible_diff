@@ -22,7 +22,7 @@
     - create_file
     - check_file
   
-- name:  "Checking for template presence for the config - {{ item.key}}"
+- name:  "Creating the files if  no exists- {{ item.key}}"
   template:
     src: "{{ role_path }}/files/{{ item.value.src_config }}"
     dest: "{{ item.value.destination_config }}"
@@ -42,19 +42,18 @@
 
 ### Main loop for creating diff files.
 
-- name:  Working with template to register changes between files for the config - "{{ item.config_name}}"
+- name:  Working with template to register changes between files for the config - "{{ item.key }}"
   template:
-    src: "{{ role_path }}/files/{{ item.src_config }}"
-    dest: "{{ item.destination_config }}"
-    mode: "{{ item.file_mode }}"
+    src: "{{ role_path }}/files/{{ item.value.src_config }}"
+    dest: "{{ item.value.destination_config }}"
+    mode: "{{ item.value.file_mode }}"
   check_mode: yes
   diff: yes
   register:
     checking_file
   tags:
     - check_file
-  loop:
-   - "{{ configuration_id }}"
+  with_dict: "{{ configuration_id }}"
 
 ### Echoing what is inside the var
 
