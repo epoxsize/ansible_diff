@@ -74,29 +74,27 @@
 
 - name: Deleting BEFORE report
   file:
-    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.src_config }}_before.txt"
+    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.value.src_config }}_before.txt"
     state: absent
   delegate_to: node10.da-demo.test
   tags:
     - check_file
     - create_file
-  loop:
-    - "{{ configuration_id }}"
+  with_dict: "{{ configuration_id }}"
 
 - name: Deleting AFTER report
   file:
-    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.src_config }}_after.txt"
+    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.value.src_config }}_after.txt"
     state: absent
   delegate_to: node10.da-demo.test
   tags:
     - check_file
     - create_file
-  loop:
-    - "{{ configuration_id }}"
+  with_dict: "{{ configuration_id }}"
 
 - name: CREATING THE FILE FOR BEFORE REPORT
   lineinfile:
-    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.src_config }}_before.txt"
+    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.value.src_config }}_before.txt"
     line: "{{ checking_file.diff[0].before}}"
     state: present
     create: yes
@@ -104,8 +102,7 @@
   delegate_to: node10.da-demo.test
   tags:
     - check_file
-  loop:
-    - "{{ configuration_id }}"
+  with_dict: "{{ configuration_id }}"
 
 - name: CREATING THE FILE FOR AFTER REPORT
   lineinfile:
@@ -117,15 +114,13 @@
   delegate_to: node10.da-demo.test
   tags:
     - check_file
-  loop:
-    - "{{ configuration_id }}"
+  with_dict: "{{ configuration_id }}"
 
 - name: CREATING THE FILE FOR DIFF REPORT
-  shell: "diff {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.src_config }}_before.txt {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.src_config }}_after.txt > {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.src_config }}_diff.txt -c"
+  shell: "diff {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.value.src_config }}_before.txt {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.value.src_config }}_after.txt > {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.value.src_config }}_diff.txt -c"
   when: checking_file.changed == True
   delegate_to: node10.da-demo.test
   tags:
     - check_file
   ignore_errors: true
-  loop:
-    - "{{ configuration_id }}"
+  with_dict: "{{ configuration_id }}"
