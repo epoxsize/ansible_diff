@@ -3,8 +3,10 @@
 ### The main vars for default usage in the role - USE IT ONLY FOR EXAMPLE
 #########################################################################
 
+
 configuration_id:
-  - config_name: "Nginx config"
+ nginx:
+    config_name: nginx
     src_config: 'nginx.j2'
     destination_config: '/tmp/nginx.conf'
     file_mode: '0777'
