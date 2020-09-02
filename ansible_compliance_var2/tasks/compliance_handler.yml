@@ -59,9 +59,9 @@
 
 - name: Echoing the data in the check_file variable
   debug:
-    var: checking_file
+    var: checking_file.results.diff
   tags:
-    - check_file.results.diff
+    - check_file
 
 ### Echoing what is inside the var - this is the main logic of working with diff 
 
