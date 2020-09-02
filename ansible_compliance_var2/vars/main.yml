@@ -5,8 +5,7 @@
 
 
 configuration_id:
- nginx:
-    config_name: nginx
+  - config_name: nginx
     src_config: 'nginx.j2'
     destination_config: '/tmp/nginx.conf'
     file_mode: '0777'
