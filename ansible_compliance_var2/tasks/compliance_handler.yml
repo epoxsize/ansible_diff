@@ -61,7 +61,7 @@
   debug:
     var: checking_file
   tags:
-    - check_file
+    - check_file.results.diff
 
 ### Echoing what is inside the var - this is the main logic of working with diff 
 
