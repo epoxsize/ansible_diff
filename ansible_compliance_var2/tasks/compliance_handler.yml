@@ -8,7 +8,7 @@
 
 - name: Echoint Configuration ID LISTVAR
   debug:
-    var: item.[0].src_config
+    var: item.config_name
   loop: configuration_id
 
 - name:  Checking for template presence for the config - "{{ item.config_name}}"
