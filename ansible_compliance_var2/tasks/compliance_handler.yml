@@ -13,7 +13,7 @@
 
 - name: Echoint Configuration ID LISTVAR
   debug:
-    msg: "{{ item.key }}"
+    msg: "{{ item.key }} {{ item.value.src_config }}"
   with_dict: "{{ configuration_id }}"
 
 - name:  Checking for template presence for the config - "{{ item.config_name}}"
