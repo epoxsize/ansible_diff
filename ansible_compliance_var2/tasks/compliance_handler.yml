@@ -1,0 +1,117 @@
+
+#########################################################################
+### The main tasks for starting the compliance role
+#########################################################################
+
+
+### Creating the file to compare
+
+- name:  Checking for template presence for the config - "{{ item.config_name}}"
+  template:
+    src: "{{ role_path }}/files/{{ item.src_config }}"
+    dest: "{{ item.destination_config }}"
+    mode: "{{ item.file_mode }}"
+  register: creating_file
+  tags:
+    - create_file
+  loop:
+    - "{{ configuration_id }}"
+
+### Echoing the data what registered during the creation
+
+- name: Echoing the data during the file creation
+  debug:
+    var: creating_file
+  tags:
+    - create_file
+
+### Main loop for creating diff files.
+
+- name:  Working with template to register changes between files for the config - "{{ item.config_name}}"
+  template:
+    src: "{{ role_path }}/files/{{ item.src_config }}"
+    dest: "{{ item.destination_config }}"
+    mode: "{{ item.file_mode }}"
+  check_mode: yes
+  diff: yes
+  register:
+    checking_file
+  tags:
+    - check_file
+  loop:
+   - "{{ configuration_id }}"
+
+### Echoing what is inside the var
+
+- name: Echoing the data in the check_file variable
+  debug:
+    var: checking_file
+  tags:
+    - check_file
+
+### Echoing what is inside the var - this is the main logic of working with diff 
+
+- name: Echoing the diff var ONLY when it changes
+  debug:
+    var: checking_file
+  when: checking_file.changed == True
+  tags:
+    - check_file
+
+- name: Deleting BEFORE report
+  file:
+    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.src_config }}_before.txt"
+    state: absent
+  delegate_to: node10.da-demo.test
+  tags:
+    - check_file
+    - create_file
+  loop:
+    - "{{ configuration_id }}"
+
+- name: Deleting AFTER report
+  file:
+    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.src_config }}_after.txt"
+    state: absent
+  delegate_to: node10.da-demo.test
+  tags:
+    - check_file
+    - create_file
+  loop:
+    - "{{ configuration_id }}"
+
+- name: CREATING THE FILE FOR BEFORE REPORT
+  lineinfile:
+    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.src_config }}_before.txt"
+    line: "{{ checking_file.diff[0].before}}"
+    state: present
+    create: yes
+  when: checking_file.changed == True
+  delegate_to: node10.da-demo.test
+  tags:
+    - check_file
+  loop:
+    - "{{ configuration_id }}"
+
+- name: CREATING THE FILE FOR AFTER REPORT
+  lineinfile:
+    path: "{{ webdir_config }}/file_{{ ansible_hostname }}_{{ item.src_config }}_after.txt"
+    line: "{{ checking_file.diff[0].after}}"
+    state: present
+    create: yes
+  when: checking_file.changed == True
+  delegate_to: node10.da-demo.test
+  tags:
+    - check_file
+  loop:
+    - "{{ configuration_id }}"
+
+- name: CREATING THE FILE FOR DIFF REPORT
+  shell: "diff {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.src_config }}_before.txt {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.src_config }}_after.txt > {{ webdir_config }}/file_{{ansible_hostname}}_{{ item.src_config }}_diff.txt -c"
+  when: checking_file.changed == True
+  delegate_to: node10.da-demo.test
+  tags:
+    - check_file
+  ignore_errors: true
+  loop:
+    - "{{ configuration_id }}"

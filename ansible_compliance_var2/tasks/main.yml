@@ -1,0 +1,10 @@
+---
+#########################################################################
+### Main init file for compliance  
+#########################################################################
+
+- name: Including the file with diff configuration
+  include_tasks: compliance_handler.yml
+
+
+
