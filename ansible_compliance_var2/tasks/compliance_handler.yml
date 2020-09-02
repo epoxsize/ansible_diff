@@ -13,19 +13,18 @@
 
 - name: Echoint Configuration ID LISTVAR
   debug:
-    msg: "{{ item.key }} {{ item.value.src_config }}"
+    msg: "{{ item.key }}  +  {{ item.value.src_config }}"
   with_dict: "{{ configuration_id }}"
 
-- name:  Checking for template presence for the config - "{{ item.config_name}}"
+- name:  "Checking for template presence for the config - {{ item.key}}"
   template:
-    src: "{{ role_path }}/files/{{ item.src_config }}"
-    dest: "{{ item.destination_config }}"
-    mode: "{{ item.file_mode }}"
+    src: "{{ role_path }}/files/{{ item.value.src_config }}"
+    dest: "{{ item.value.destination_config }}"
+    mode: "{{ item.value.file_mode }}"
   register: creating_file
   tags:
     - create_file
-  loop:
-    - "{{ configuration_id }}"
+  with_dict: "{{ configuration_id }}"
 
 ### Echoing the data what registered during the creation
 

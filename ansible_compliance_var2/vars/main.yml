@@ -6,11 +6,11 @@
 
 configuration_id:
   nginx:
-    src_config: 'nginx.j2'
+    src_config: 'nginx.conf'
     destination_config: '/tmp/nginx.conf'
     file_mode: '0777'
   apache:
-    src_config: 'apache.j2'
+    src_config: 'apache.conf'
     destination_config: '/tmp/apache.conf'
     file_mode: '0777'
   
